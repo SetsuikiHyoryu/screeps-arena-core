@@ -9,17 +9,17 @@ import type {
   CreepHarvestResult,
   CreepMoveResult,
 } from 'game/prototypes/creep'
-import { ConstructionSiteState, CreepState, SourceState } from '../enums/index'
-import type {
+import {
   Action,
   ConstructionSiteUnit,
   CreepUnit,
   SourceUnit,
   Unit,
-} from '../types'
-import { isNil, notify } from '../utils/index'
-import { constructionSiteUnits, sourceUnits } from '../units/index'
-import type { GameObject } from 'game/prototypes'
+} from '../../../types'
+import { isNil, notify } from '../../../utils'
+import { ConstructionSiteState, CreepState, SourceState } from '../../../enums'
+import { GameObject } from 'game/prototypes'
+import { constructionSiteUnits, sourceUnits } from '../../../units'
 
 const executeAction = (creep: CreepUnit, action: Action | undefined) => {
   if (isNil(action)) {
@@ -188,7 +188,7 @@ const stateActionMap: Partial<Record<CreepState, (creep: CreepUnit) => void>> =
     [CreepState.Harvesting]: (creep) => handleAssignTaskMap(creep),
   }
 
-export const creepConstructionSiteBuilder = (creep: CreepUnit) => {
+export const creepManager = (creep: CreepUnit) => {
   const action = stateActionMap[creep.state]
   action?.(creep)
 }

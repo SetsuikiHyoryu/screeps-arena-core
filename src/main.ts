@@ -3,7 +3,7 @@ import {
   syncCreepUnits,
   syncSourceUnits,
   syncSpawnUnits,
-} from './units'
+} from './sync'
 
 export function loop() {
   syncConstructionSiteUnits()

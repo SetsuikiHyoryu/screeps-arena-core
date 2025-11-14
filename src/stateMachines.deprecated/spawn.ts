@@ -1,9 +1,11 @@
 import { ATTACK, CARRY, ERR_BUSY, HEAL, MOVE, WORK } from 'game/constants'
-import { SpawnState } from '../enums/index'
+import { CreepState, SpawnState } from '../enums'
 import type { CreepUnit, SpawnUnit } from '../types'
-import { creepUnitCreator, creepUnits } from '../units/index'
+import { creepUnits } from '../units'
 import type { Creep } from 'game/prototypes'
 import type { BodyPartType } from 'game/prototypes/creep'
+import { unitCreator } from '../utils'
+import { creepManager } from '../manager/season1/construct_and_control/creepManager'
 
 const spawnCreepErrorMap: Partial<
   Record<number, (spawn: SpawnUnit, body: BodyPartType[]) => any>
@@ -34,7 +36,14 @@ const spawnCreep = (
     return
   }
 
-  creepUnitCreator({ entity: object, codeName })
+  unitCreator({
+    entity: object,
+    codeName,
+    state: CreepState.Idle,
+    entityUnits: creepUnits,
+    manager: creepManager,
+  })
+
   spawn.state = SpawnState.Idle
 }
 

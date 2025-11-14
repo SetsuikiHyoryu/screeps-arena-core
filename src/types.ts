@@ -25,12 +25,6 @@ export type SpawnUnit = Unit<StructureSpawn, SpawnState>
 
 export type EntityUnits<U extends Unit> = Record<string | number, U>
 
-export interface EntityUnitCreatorParameters<Entity extends GameObject> {
-  entity: Entity
-  codeName?: string
-  isSync?: boolean
-}
-
 export interface Manager {
   creepManager: (creep: CreepUnit) => void
   spawnManager: (spawn: SpawnUnit) => void

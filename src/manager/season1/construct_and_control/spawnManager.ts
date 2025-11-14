@@ -1,11 +1,12 @@
 import { CARRY, ERR_BUSY, MOVE, WORK } from 'game/constants'
 import type { Creep } from 'game/prototypes'
 import type { BodyPartType } from 'game/prototypes/creep'
-import { SpawnState } from '../enums/index'
-import type { CreepUnit, SpawnUnit } from '../types'
-import { creepUnitCreator, creepUnits } from '../units/index'
-import { isNil, notify } from '../utils/index'
 import { ERR_NOT_ENOUGH_ENERGY } from 'game'
+import { creepManager } from './creepManager'
+import { CreepUnit, SpawnUnit } from '../../../types'
+import { CreepState, SpawnState } from '../../../enums'
+import { isNil, notify, unitCreator } from '../../../utils'
+import { creepUnits } from '../../../units'
 
 const spawnCreepErrorMap: Partial<
   Record<number, (spawn: SpawnUnit, body: BodyPartType[]) => any>
@@ -32,7 +33,16 @@ const spawnCreep = (
 
   if (isNil(error) && object?.id) {
     const codeName = `${codeNamePrefix}${object.id}`
-    creepUnitCreator({ entity: object, codeName })
+
+    unitCreator({
+      entity: object,
+      codeName,
+      state: CreepState.Idle,
+      entityUnits: creepUnits,
+      manager: creepManager,
+      isSync: true,
+    })
+
     spawn.state = SpawnState.Idle
     console.log({ data: `${spawn.codeName} created ${codeName}` })
     return
@@ -84,7 +94,7 @@ const stateMap: Partial<Record<SpawnState, (spawn: SpawnUnit) => void>> = {
   [SpawnState.Spawning]: (spawn) => doSpawn(spawn),
 }
 
-export const spawnConstructionSiteBuilder = (spawn: SpawnUnit) => {
+export const spawnManager = (spawn: SpawnUnit) => {
   const action = stateMap[spawn.state]
 
   if (isNil(action)) {
