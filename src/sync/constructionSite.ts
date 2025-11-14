@@ -1,7 +1,6 @@
 import { ConstructionSite } from 'game/prototypes'
 import { getObjectsByPrototype } from 'game/utils'
 import { ConstructionSiteState } from '../enums/index'
-import { constructionSiteUnits } from '../units'
 import { syncUnitsFactory, unitCreator } from '../utils'
 
 export const syncConstructionSiteUnits = () => {
@@ -14,7 +13,6 @@ export const syncConstructionSiteUnits = () => {
 
   syncUnitsFactory({
     entities: sites,
-    entityUnits: constructionSiteUnits,
     unitCreator: (constructionSite) =>
       unitCreator({
         entity: constructionSite,
@@ -22,7 +20,6 @@ export const syncConstructionSiteUnits = () => {
         state: isConstructing(constructionSite)
           ? ConstructionSiteState.Constructing
           : ConstructionSiteState.Comleted,
-        entityUnits: constructionSiteUnits,
         isSync: true,
       }),
   })

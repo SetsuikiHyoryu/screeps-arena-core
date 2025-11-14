@@ -40,7 +40,6 @@ const spawnCreep = (
     entity: object,
     codeName,
     state: CreepState.Idle,
-    entityUnits: creepUnits,
     manager: creepManager,
   })
 

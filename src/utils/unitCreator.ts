@@ -1,11 +1,11 @@
 import { GameObject } from 'game/prototypes'
-import { EntityUnits, Unit } from '../types'
+import { Unit } from '../types'
+import { findUnitsByEntity } from './findUnitsByEntity'
 
 type UnitCreatorParameters<Entity extends GameObject, State> = Unit<
   Entity,
   State
 > & {
-  entityUnits: EntityUnits<Unit<Entity, State>>
   manager?: (unit: Unit<Entity, State>) => void
   isSync?: boolean
 }
@@ -14,7 +14,6 @@ export const unitCreator = <Entity extends GameObject, State>({
   entity,
   codeName,
   state,
-  entityUnits,
   manager,
   isSync = false,
 }: UnitCreatorParameters<Entity, State>) => {
@@ -24,7 +23,8 @@ export const unitCreator = <Entity extends GameObject, State>({
     state,
   }
 
-  entityUnits[entity.id] = unit
+  const units = findUnitsByEntity(entity)
+  units[entity.id] = unit
 
   if (!isSync) {
     console.log(`${unit.codeName} has been created.`)
